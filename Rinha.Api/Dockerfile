@@ -21,5 +21,8 @@ RUN dotnet publish -c Release -r linux-x64 -o /app/publish \
 FROM debian:bookworm-slim AS final
 WORKDIR /app
 COPY --from=build /app/publish .
+RUN rm -f appsettings.Development.json
+RUN rm -f /app/appsettings.Development.json
+RUN rm -f /app/publish/appsettings.Development.json
 
 ENTRYPOINT ["./Rinha.Api"]
