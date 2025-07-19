@@ -8,7 +8,7 @@ namespace Rinha.Api;
 
 public static class Program
 {
-    public static void Main(string[] args)
+    public async static Task Main(string[] args)
     {
         ThreadPool.SetMinThreads(300, 300);
         var builder = WebApplication.CreateBuilder(args);
@@ -45,8 +45,6 @@ public static class Program
 
         builder.Services.AddSingleton<PaymentService>();
         builder.Services.AddSingleton<HealthMonitor>();
-
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -77,28 +75,29 @@ public static class Program
         {
             try
             {
-                context.RequestAborted.ThrowIfCancellationRequested();
-                await paymentService.ProcessPayment(request, context.RequestAborted);
+                await paymentService.EnqueuePaymentAsync(request, context.RequestAborted);
                 return Results.Accepted();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine($"Erro ao processar pagamento: {ex.Message}");
                 return Results.InternalServerError();
             }
         });
 
         // GET /payments-summary
-        app.MapGet("/payments-summary", async (HttpContext context, string? from, string? to) =>
+        app.MapGet("/payments-summary", async (HttpContext context, DateTimeOffset? from, DateTimeOffset? to) =>
         {
-            context.RequestAborted.ThrowIfCancellationRequested();
-            var fromDate = string.IsNullOrEmpty(from) ? DateTimeOffset.MinValue : DateTimeOffset.Parse(from);
-            var toDate = string.IsNullOrEmpty(to) ? DateTimeOffset.MaxValue : DateTimeOffset.Parse(to);
+            if (!from.HasValue)
+                from = DateTimeOffset.MinValue;
 
-            var summary = await paymentService.GetPaymentsSummary(fromDate, toDate);
+            if (!to.HasValue)
+                to = DateTimeOffset.MaxValue;
+            var summary = await paymentService.GetPaymentsSummary(from.Value, to.Value);
             return Results.Ok(summary);
         });
 
-        app.Run();
+        await app.RunAsync();
     }
 }
 

@@ -1,11 +1,11 @@
-@baseUrl = http://localhost:54321
+@baseUrl = http://localhost:9999
 
 ### Criar pagamento
 POST {{baseUrl}}/payments
 Content-Type: application/json
 
 {
-  "correlationId": "c0a80101-0000-0000-0000-000000001111",
+  "correlationId": "c0a80101-0000-0000-0000-000000000110",
   "amount": 100.0
 }
 

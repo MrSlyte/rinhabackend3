@@ -20,7 +20,6 @@ services:
           memory: "58MB"
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:9999
-      - ASPNETCORE_ENVIRONMENT=Production
       - REDIS_ENDPOINT=redis:6379,abortConnect=false
       - PAYMENT_PROCESSOR_URL_DEFAULT=http://payment-processor-default:8080
       - PAYMENT_PROCESSOR_URL_FALLBACK=http://payment-processor-fallback:8080
@@ -46,7 +45,6 @@ services:
           memory: "58MB"
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:9999
-      - ASPNETCORE_ENVIRONMENT=Production
       - REDIS_ENDPOINT=redis:6379,abortConnect=false
       - PAYMENT_PROCESSOR_URL_DEFAULT=http://payment-processor-default:8080
       - PAYMENT_PROCESSOR_URL_FALLBACK=http://payment-processor-fallback:8080
@@ -71,7 +69,6 @@ services:
           memory: "58MB"
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:9999
-      - ASPNETCORE_ENVIRONMENT=Production
       - REDIS_ENDPOINT=redis:6379,abortConnect=false
       - PAYMENT_PROCESSOR_URL_DEFAULT=http://payment-processor-default:8080
       - PAYMENT_PROCESSOR_URL_FALLBACK=http://payment-processor-fallback:8080
@@ -96,7 +93,6 @@ services:
           memory: "58MB"
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:9999
-      - ASPNETCORE_ENVIRONMENT=Production
       - REDIS_ENDPOINT=redis:6379,abortConnect=false
       - PAYMENT_PROCESSOR_URL_DEFAULT=http://payment-processor-default:8080
       - PAYMENT_PROCESSOR_URL_FALLBACK=http://payment-processor-fallback:8080
@@ -111,7 +107,7 @@ services:
   redis:
     image: redis:7.2-alpine
     container_name: redis
-    command: ["redis-server", "--appendonly", "yes"]
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
     deploy:
       resources:
         limits:
@@ -119,8 +115,11 @@ services:
           memory: "59MB"
     expose:
       - "6379"
+    ports:
+      - "6379:6379"
     networks:
       - rinha-net
+      - payment-processor
 
   nginx:
     image: nginx:1.25-alpine
@@ -138,5 +137,6 @@ services:
       - api-1
       - api-2
       - api-3
+      - api-4
     networks:
       - rinha-net
