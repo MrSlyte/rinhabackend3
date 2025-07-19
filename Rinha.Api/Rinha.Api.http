@@ -1,16 +1,17 @@
 @baseUrl = http://localhost:9999
+@adminBaseUrl = http://localhost:9999
 
 ### Criar pagamento
 POST {{baseUrl}}/payments
 Content-Type: application/json
 
 {
-  "correlationId": "c0a80101-0000-0000-0000-000000000110",
+  "correlationId": "c0a80101-0000-0000-0000-000000001110",
   "amount": 100.0
 }
 
 ### Obter resumo dos pagamentos
-GET {{baseUrl}}/payments-summary?from=2025-07-09T00:00:00.000Z&to=2025-07-13T23:59:59.000Z
+GET {{baseUrl}}/payments-summary
 Accept: application/json
 
 
