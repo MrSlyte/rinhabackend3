@@ -1,0 +1,27 @@
+﻿
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends clang gcc libc6-dev zlib1g-dev \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /src
+COPY ["Rinha.Api/Rinha.Api.csproj", "Rinha.Api/"]
+RUN dotnet restore "Rinha.Api/Rinha.Api.csproj"
+
+COPY . .
+WORKDIR /src/Rinha.Api
+
+# 2. Publish Native AOT, trimmed, self-contained linux-x64
+RUN dotnet publish -c Debug -r linux-x64 -o /app/publish \
+    /p:PublishAot=false \
+    /p:PublishTrimmed=false \
+    /p:InvariantGlobalization=true
+
+    # ─────────────── etapa final ───────────────
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+WORKDIR /app
+COPY --from=build /app/publish .
+
+# binário único já contém o runtime
+ENTRYPOINT ["./Rinha.Api"]

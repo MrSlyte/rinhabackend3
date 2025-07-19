@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		docker-compose.yml = docker-compose.yml
+		LICENSE = LICENSE
+		nginx.conf = nginx.conf
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rinha.Api", "Rinha.Api\Rinha.Api.csproj", "{BFBDE87A-E061-4572-8CCE-45638044A63A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BFBDE87A-E061-4572-8CCE-45638044A63A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFBDE87A-E061-4572-8CCE-45638044A63A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFBDE87A-E061-4572-8CCE-45638044A63A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFBDE87A-E061-4572-8CCE-45638044A63A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {889DA63B-B71C-45D9-9FFF-95282EB08154}
+	EndGlobalSection
+EndGlobal
